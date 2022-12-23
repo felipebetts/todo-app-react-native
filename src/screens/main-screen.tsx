@@ -7,20 +7,71 @@ import {
   themeTools,
   useTheme,
   useColorMode,
-  useColorModeValue
+  useColorModeValue,
+  Fab,
+  Icon
 } from 'native-base'
-import { Pressable } from 'react-native'
+import { AntDesign } from '@expo/vector-icons'
+import shortid from 'shortid'
 
 import ThemeToggle from '../components/theme-toggle'
 import TaskItem from '../components/task-item'
+import TaskList from '../components/task-list'
+
+const initialData = [
+  {
+    id: shortid.generate(),
+    subject: 'Buy movie tickets for Friday',
+    done: false
+  },
+  {
+    id: shortid.generate(),
+    subject: 'Make a React Native app',
+    done: false
+  }
+]
 
 export default function MainScreen() {
-  const [checked, setChecked] = useState<boolean>(false)
-  const [subject, setSubject] = useState('Task Item')
-  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [data, setData] = useState(initialData)
+  const [editingItemId, setEditingItemId] = useState<string | null>(null)
 
-  const handleCheckboxPress = useCallback(() => {
-    setChecked(prev => !prev)
+  const handleToggleTaskItem = useCallback(item => {
+    setData(prevData => {
+      const newData = [...prevData]
+      const index = prevData.indexOf(item)
+      newData[index] = {
+        ...item,
+        done: !item.done
+      }
+      return newData
+    })
+  }, [])
+
+  const handleChangeTaskItemSubject = useCallback((item, newSubject) => {
+    setData(prevData => {
+      const newData = [...prevData]
+      const index = prevData.indexOf(item)
+      newData[index] = {
+        ...item,
+        subject: newSubject
+      }
+      return newData
+    })
+  }, [])
+
+  const handleFinishEditingTaskItem = useCallback(_item => {
+    setEditingItemId(null)
+  }, [])
+
+  const handlePressTaskItemLabel = useCallback(item => {
+    setEditingItemId(item.id)
+  }, [])
+
+  const handleRemoveItem = useCallback(item => {
+    setData(prevData => {
+      const newData = prevData.filter(i => i !== item)
+      return newData
+    })
   }, [])
 
   return (
@@ -31,17 +82,37 @@ export default function MainScreen() {
       flex={1}
     >
       <VStack space={5} alignItems="center" w="full">
-        <TaskItem
-          isDone={checked}
-          isEditing={isEditing}
-          onToggleCheckbox={handleCheckboxPress}
-          subject={subject}
-          onChangeSubject={setSubject}
-          onFinishEditing={() => setIsEditing(false)}
-          onPressLabel={() => setIsEditing(true)}
+        <TaskList
+          data={data}
+          onToggleItem={handleToggleTaskItem}
+          onChangeSubject={handleChangeTaskItemSubject}
+          onFinishEditing={handleFinishEditingTaskItem}
+          onPressLabel={handlePressTaskItemLabel}
+          onRemoveItem={handleRemoveItem}
+          editingItemId={editingItemId}
         />
         <ThemeToggle />
       </VStack>
+      <Fab
+        position="absolute"
+        renderInPortal={false}
+        size="sm"
+        icon={<Icon color="white" as={<AntDesign name="plus" />} size="sm" />}
+        colorScheme={useColorModeValue('blue', 'darkBlue')}
+        bg={useColorModeValue('blue.500', 'blue.400')}
+        onPress={() => {
+          const id = shortid.generate()
+          setData([
+            {
+              id,
+              subject: '',
+              done: false
+            },
+            ...data
+          ])
+          setEditingItemId(id)
+        }}
+      />
     </Center>
   )
 }
