@@ -14,12 +14,10 @@ import { Pressable } from 'react-native'
 import ThemeToggle from '../components/theme-toggle'
 import TaskItem from '../components/task-item'
 
-const checkmarkColor = '#000000'
-const highlightColor = '#ff0000'
-const boxOutlineColor = '#000000'
-
 export default function MainScreen() {
-  const [checked, setChecked] = React.useState<boolean>(false)
+  const [checked, setChecked] = useState<boolean>(false)
+  const [subject, setSubject] = useState('Task Item')
+  const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const handleCheckboxPress = useCallback(() => {
     setChecked(prev => !prev)
@@ -35,13 +33,12 @@ export default function MainScreen() {
       <VStack space={5} alignItems="center" w="full">
         <TaskItem
           isDone={checked}
+          isEditing={isEditing}
           onToggleCheckbox={handleCheckboxPress}
-          subject="Task item"
-        />
-        <TaskItem
-          isDone={checked}
-          onToggleCheckbox={handleCheckboxPress}
-          subject="Task item"
+          subject={subject}
+          onChangeSubject={setSubject}
+          onFinishEditing={() => setIsEditing(false)}
+          onPressLabel={() => setIsEditing(true)}
         />
         <ThemeToggle />
       </VStack>
