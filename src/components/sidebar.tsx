@@ -59,25 +59,27 @@ const Sidebar = (props: DrawerContentComponentProps) => {
           borderColor="secondary.500"
           borderWidth={3}
         />
-        <ThemeToggle />
+        <Heading mb={4} size="xl">
+          Felipe Betts
+        </Heading>
+        <MenuButton
+          active={currentRoute === 'Main'}
+          onPress={handlePressMenuMain}
+          icon="inbox"
+        >
+          Tasks
+        </MenuButton>
+        <MenuButton
+          active={currentRoute === 'About'}
+          onPress={handlePressMenuAbout}
+          icon="info"
+        >
+          About
+        </MenuButton>
       </VStack>
-      <Heading mb={4} size="xl">
-        Felipe Betts
-      </Heading>
-      <MenuButton
-        active={currentRoute === 'Main'}
-        onPress={handlePressMenuMain}
-        icon="inbox"
-      >
-        Tasks
-      </MenuButton>
-      <MenuButton
-        active={currentRoute === 'About'}
-        onPress={handlePressMenuAbout}
-        icon="info"
-      >
-        About
-      </MenuButton>
+      <Center>
+        <ThemeToggle />
+      </Center>
     </AnimatedColorBox>
   )
 }
