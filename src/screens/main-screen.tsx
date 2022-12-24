@@ -4,9 +4,9 @@ import { AntDesign } from '@expo/vector-icons'
 import shortid from 'shortid'
 
 import AnimatedColorBox from '../components/animated-color-box'
-import ThemeToggle from '../components/theme-toggle'
 import TaskList from '../components/task-list'
 import Masthead from '../components/masthead'
+import Navbar from '../components/navbar'
 
 const initialData = [
   {
@@ -70,11 +70,18 @@ export default function MainScreen() {
       bg={useColorModeValue('warmGray.50', 'primary.900')}
       w="full"
     >
-      <Masthead
-        title="Eaee jow!"
-        image={require('../assets/masthead.png')}
-      ></Masthead>
-      <VStack space={5} alignItems="center" w="full">
+      <Masthead title="Eaee jow!" image={require('../assets/masthead.png')}>
+        <Navbar />
+      </Masthead>
+      <VStack
+        flex={1}
+        space={1}
+        mt="-20px"
+        borderTopLeftRadius="20px"
+        borderTopRightRadius="20px"
+        pt="20px"
+        bg={useColorModeValue('warmGray.50', 'primary.900')}
+      >
         <TaskList
           data={data}
           onToggleItem={handleToggleTaskItem}
@@ -84,7 +91,6 @@ export default function MainScreen() {
           onRemoveItem={handleRemoveItem}
           editingItemId={editingItemId}
         />
-        <ThemeToggle />
       </VStack>
       <Fab
         position="absolute"

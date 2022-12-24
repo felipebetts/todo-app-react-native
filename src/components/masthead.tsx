@@ -5,7 +5,7 @@ import { Box, VStack, Heading, Image } from 'native-base'
 interface Props {
   title: string
   image: ImageSourcePropType
-  children?: React.ReactNode
+  children: React.ReactNode
 }
 
 const Masthead = ({ title, image, children }: Props) => {
