@@ -1,22 +1,12 @@
 import React, { useState, useCallback } from 'react'
-import {
-  Text,
-  Box,
-  Center,
-  VStack,
-  themeTools,
-  useTheme,
-  useColorMode,
-  useColorModeValue,
-  Fab,
-  Icon
-} from 'native-base'
+import { VStack, useColorModeValue, Fab, Icon } from 'native-base'
 import { AntDesign } from '@expo/vector-icons'
 import shortid from 'shortid'
 
+import AnimatedColorBox from '../components/animated-color-box'
 import ThemeToggle from '../components/theme-toggle'
-import TaskItem from '../components/task-item'
 import TaskList from '../components/task-list'
+import Masthead from '../components/masthead'
 
 const initialData = [
   {
@@ -75,12 +65,15 @@ export default function MainScreen() {
   }, [])
 
   return (
-    <Center
-      _dark={{ bg: 'blueGray.900' }}
-      _light={{ bg: 'blueGray.50' }}
-      // px={4}
+    <AnimatedColorBox
       flex={1}
+      bg={useColorModeValue('warmGray.50', 'primary.900')}
+      w="full"
     >
+      <Masthead
+        title="Eaee jow!"
+        image={require('../assets/masthead.png')}
+      ></Masthead>
       <VStack space={5} alignItems="center" w="full">
         <TaskList
           data={data}
@@ -113,6 +106,6 @@ export default function MainScreen() {
           setEditingItemId(id)
         }}
       />
-    </Center>
+    </AnimatedColorBox>
   )
 }
