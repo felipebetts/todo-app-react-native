@@ -4,6 +4,7 @@ import {
   PanGestureHandlerProps,
   ScrollView
 } from 'react-native-gesture-handler'
+import { Center, Text } from 'native-base'
 
 import TaskItem from './task-item'
 import { makeStyledComponent } from '../utils/styled'
@@ -11,7 +12,7 @@ import { makeStyledComponent } from '../utils/styled'
 const StyledView = makeStyledComponent(View)
 const StyledScrollView = makeStyledComponent(ScrollView)
 
-interface TaskItemData {
+export interface TaskItemData {
   id: string
   subject: string
   done: boolean
@@ -115,19 +116,25 @@ const TaskList = ({
   return (
     <StyledScrollView ref={refScrollView} w="full">
       <AnimatePresence>
-        {data.map(item => (
-          <AnimatedTaskItem
-            key={item.id}
-            data={item}
-            simultaneousHandlers={refScrollView}
-            isEditing={item.id === editingItemId}
-            onToggleItem={onToggleItem}
-            onChangeSubject={onChangeSubject}
-            onFinishEditing={onFinishEditing}
-            onPressLabel={onPressLabel}
-            onRemove={onRemoveItem}
-          />
-        ))}
+        {data.length === 0 ? (
+          <Center>
+            <Text fontSize={19}>Add a task by pressing the plus button</Text>
+          </Center>
+        ) : (
+          data.map(item => (
+            <AnimatedTaskItem
+              key={item.id}
+              data={item}
+              simultaneousHandlers={refScrollView}
+              isEditing={item.id === editingItemId}
+              onToggleItem={onToggleItem}
+              onChangeSubject={onChangeSubject}
+              onFinishEditing={onFinishEditing}
+              onPressLabel={onPressLabel}
+              onRemove={onRemoveItem}
+            />
+          ))
+        )}
       </AnimatePresence>
     </StyledScrollView>
   )

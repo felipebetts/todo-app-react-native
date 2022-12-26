@@ -4,28 +4,29 @@ import { AntDesign } from '@expo/vector-icons'
 import shortid from 'shortid'
 
 import AnimatedColorBox from '../components/animated-color-box'
-import TaskList from '../components/task-list'
+import TaskList, { TaskItemData } from '../components/task-list'
 import Masthead from '../components/masthead'
 import Navbar from '../components/navbar'
 
-const initialData = [
-  {
-    id: shortid.generate(),
-    subject: 'Buy movie tickets for Friday',
-    done: false
-  },
-  {
-    id: shortid.generate(),
-    subject: 'Make a React Native app',
-    done: false
-  }
-]
+const initialData: Array<TaskItemData> = []
+// [
+//   {
+//     id: shortid.generate(),
+//     subject: 'Buy movie tickets for Friday',
+//     done: false
+//   },
+//   {
+//     id: shortid.generate(),
+//     subject: 'Make a React Native app',
+//     done: false
+//   }
+// ]
 
 export default function MainScreen() {
-  const [data, setData] = useState(initialData)
+  const [data, setData] = useState<Array<TaskItemData>>(initialData)
   const [editingItemId, setEditingItemId] = useState<string | null>(null)
 
-  const handleToggleTaskItem = useCallback(item => {
+  const handleToggleTaskItem = useCallback((item: TaskItemData) => {
     setData(prevData => {
       const newData = [...prevData]
       const index = prevData.indexOf(item)
@@ -37,27 +38,30 @@ export default function MainScreen() {
     })
   }, [])
 
-  const handleChangeTaskItemSubject = useCallback((item, newSubject) => {
-    setData(prevData => {
-      const newData = [...prevData]
-      const index = prevData.indexOf(item)
-      newData[index] = {
-        ...item,
-        subject: newSubject
-      }
-      return newData
-    })
-  }, [])
+  const handleChangeTaskItemSubject = useCallback(
+    (item: TaskItemData, newSubject: string) => {
+      setData(prevData => {
+        const newData = [...prevData]
+        const index = prevData.indexOf(item)
+        newData[index] = {
+          ...item,
+          subject: newSubject
+        }
+        return newData
+      })
+    },
+    []
+  )
 
-  const handleFinishEditingTaskItem = useCallback(_item => {
+  const handleFinishEditingTaskItem = useCallback((_item: TaskItemData) => {
     setEditingItemId(null)
   }, [])
 
-  const handlePressTaskItemLabel = useCallback(item => {
+  const handlePressTaskItemLabel = useCallback((item: TaskItemData) => {
     setEditingItemId(item.id)
   }, [])
 
-  const handleRemoveItem = useCallback(item => {
+  const handleRemoveItem = useCallback((item: TaskItemData) => {
     setData(prevData => {
       const newData = prevData.filter(i => i !== item)
       return newData
