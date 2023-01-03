@@ -28,6 +28,9 @@ const Sidebar = (props: DrawerContentComponentProps) => {
   const handlePressMenuAbout = useCallback(() => {
     navigation.navigate('About')
   }, [navigation])
+  const handlePressMenuLists = useCallback(() => {
+    navigation.navigate('Lists')
+  }, [navigation])
 
   return (
     <AnimatedColorBox
@@ -75,6 +78,13 @@ const Sidebar = (props: DrawerContentComponentProps) => {
           icon="info"
         >
           About
+        </MenuButton>
+        <MenuButton
+          active={currentRoute === 'Lists'}
+          onPress={handlePressMenuLists}
+          icon="info"
+        >
+          Lists
         </MenuButton>
       </VStack>
       <Center>
